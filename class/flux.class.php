@@ -48,23 +48,35 @@ function add_flux($url){
            }
                 }
 
+
+    // ON RECUPERE L'ID DU FLUX INSERE
     $sql_id_flux = "SELECT id FROM flux WHERE url = '$url'";
     $stmt = $this->dbh->query($sql_id_flux);
-
-
 	$row = $stmt->fetch(PDO::FETCH_ASSOC);
 	$id_flux  = $row['id'];
 
-    $sql2 = $this->dbh->exec("INSERT INTO subscriptions (id,id_flux,id_user) VALUES('','$id_flux', 2)");
+	// ON RECUPERE L'ID USER 
+	$sql_check_sub = "SELECT id_user FROM subscriptions WHERE id_flux='$id_flux'";
+	$stmt = $this->dbh->query($sql_check_sub);
+	$row = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+	$id_user = 1;
+	foreach($row as $key=>$r){
+		if($id_user ==($r['id_user'])){
+			return 'you are also abonned at this RSS';
+			exit;
+		}	
+	}
+
+    $sql2 = $this->dbh->exec("INSERT INTO subscriptions (id,id_flux,id_user) VALUES('','$id_flux', 1)");
 
 
-    return;
+
+    return 'RSS Feed added with success !';
       
 
      
    }
-
-	
 
 
 }
