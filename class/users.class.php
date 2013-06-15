@@ -3,10 +3,11 @@
 //http://www.emirplicanic.com/php/simple-phpmysql-authentication-class
 
 //For security reasons, don't display any errors or warnings. Comment out in DEV.
-error_reporting(0);
+// error_reporting(0);
 //start session
 session_start();
 class logmein {
+
     //database setup
        //MAKE SURE TO FILL IN DATABASE INFO
     var $hostname_logon = 'localhost';      //Database server LOCATION
@@ -15,25 +16,24 @@ class logmein {
     var $password_logon = '';       //Database PASSWORD
  
     //table fields
-    var $user_table = 'users';          //Users table name
+    var $user_table  = 'users';          //Users table name
     var $user_column = 'useremail';     //USERNAME column (value MUST be valid email)
     var $pass_column = 'password';      //PASSWORD column
-    var $user_level = 'userlevel';      //(optional) userlevel column
+    var $user_level  = 'userlevel';      //(optional) userlevel column
  
     //encryption
     var $encrypt = true;       //set to true to use md5 encryption for the password
  
-    //connect to database
-    function dbconnect(){
-        $connections = mysql_connect($this->hostname_logon, $this->username_logon, $this->password_logon) or die ('Unabale to connect to the database');
-        mysql_select_db($this->database_logon) or die ('Unable to select database!');
-        return;
+
+    public function __construct()
+    {
+        $this->dbh = new PDO("mysql:host={$this->hostname_logon};dbname={$this->database_logon}",$this->username_logon,$this->password_logon);
     }
+
  
     //login function
     function login($table, $username, $password){
-        //conect to DB
-        $this->dbconnect();
+
         //make sure table name is set
         if($this->user_table == ""){
             $this->user_table = $table;
@@ -43,24 +43,20 @@ class logmein {
             $password = md5($password);
         }
         //execute login via qry function that prevents MySQL injections
-        $result = $this->qry("SELECT * FROM {$this->user_table} WHERE {$this->user_column} = '?' AND {$this->pass_column} = '?';" , $username, $password);
-        $row=mysql_fetch_assoc($result);
-        if($row != "Error"){
-            if($row[$this->user_column] !="" && $row[$this->pass_column] !=""){
-                //register sessions
-                //you can add additional sessions here if needed
-                $_SESSION['loggedin'] = $row[$this->pass_column];
-                //userlevel session is optional. Use it if you have different user levels
-                $_SESSION['userlevel'] = $row[$this->user_level];
-                return true;
-            }else{
-                session_destroy();
-                return false;
-            }
+        $result = $this->dbh->query("SELECT * FROM users WHERE useremail = '$username' AND password = '$password'");
+        $row = $result->fetch(PDO::FETCH_ASSOC);
+
+        if($row['useremail'] !="" && $row['password'] !=""){
+            //register sessions
+            //you can add additional sessions here if needed
+            $_SESSION['loggedin'] = $row['password'];
+            //userlevel session is optional. Use it if you have different user levels
+            $_SESSION['userlevel'] = $row['userlevel'];
+            return true;
         }else{
+            session_destroy();
             return false;
         }
- 
     }
  
     //prevent injection
@@ -89,8 +85,7 @@ class logmein {
  
     //check if loggedin
     function logincheck($logincode, $user_table, $pass_column, $user_column){
-        //conect to DB
-        $this->dbconnect();
+
         //make sure password column and table are set
         if($this->pass_column == ""){
             $this->pass_column = $pass_column;
@@ -102,16 +97,18 @@ class logmein {
             $this->user_table = $user_table;
         }
         //exectue query
-        $result = $this->qry("SELECT * FROM ".$this->user_table." WHERE ".$this->pass_column." = '?';" , $logincode);
-        $rownum = mysql_num_rows($result);
-        //return true if logged in and false if not
-        if($row != "Error"){
+        $result = $this->dbh->query("SELECT COUNT(*) FROM ".$this->user_table." WHERE ".$this->pass_column." = ' $logincode'");
+        $rownum = count($result);
+        // var_dump($rownum);
+        // $rownum = mysql_num_rows($result);
+        // //return true if logged in and false if not
+        // if($row != "Error"){
             if($rownum > 0){
                 return true;
             }else{
                 return false;
             }
-        }
+        // }
     }
  
     //reset password
@@ -194,13 +191,12 @@ Your new password is: ".$newpassword."
     //login form
     function loginform($formname, $formclass, $formaction){
         //conect to DB
-        $this->dbconnect();
         echo'
 <form name="'.$formname.'" method="post" id="'.$formname.'" class="'.$formclass.'" enctype="application/x-www-form-urlencoded" action="'.$formaction.'">
 <div><label for="username">Username</label>
 <input name="username" id="username" type="text"></div>
 <div><label for="password">Password</label>
-<input name="password" id="password" type="password"></div>
+<input name="passwd" id="passwd" type="password"></div>
 <input name="action" id="action" value="login" type="hidden">
 <div>
 <input name="submit" id="submit" value="Login" type="submit"></div>
@@ -209,33 +205,52 @@ Your new password is: ".$newpassword."
 ';
     }
     //reset password form
-    function resetform($formname, $formclass, $formaction){
-        //conect to DB
-        $this->dbconnect();
-        echo'
-<form name="'.$formname.'" method="post" id="'.$formname.'" class="'.$formclass.'" enctype="application/x-www-form-urlencoded" action="'.$formaction.'">
-<div><label for="username">Username</label>
-<input name="username" id="username" type="text"></div>
-<input name="action" id="action" value="resetlogin" type="hidden">
-<div>
-<input name="submit" id="submit" value="Reset Password" type="submit"></div>
-</form>
+//     function resetform($formname, $formclass, $formaction){
+//         //conect to DB
+//         $this->dbconnect();
+//         echo'
+// <form name="'.$formname.'" method="post" id="'.$formname.'" class="'.$formclass.'" enctype="application/x-www-form-urlencoded" action="'.$formaction.'">
+// <div><label for="username">Username</label>
+// <input name="username" id="username" type="text"></div>
+// <input name="action" id="action" value="resetlogin" type="hidden">
+// <div>
+// <input name="submit" id="submit" value="Reset Password" type="submit"></div>
+// </form>
  
-';
+// ';
+//     }
+
+    function createuser($email,$passwd){
+        $passwd = md5( $passwd );
+        
+        $result = $this->dbh->exec("INSERT INTO users VALUES ('','$email', '$passwd', 1)");
+        // var_dump($result);
+        //erreur ?
+        if( ! $result ){
+            //utilisateur existe ?
+            $errorcode = $this->dbh->errorInfo();
+            $errorcode = $errorcode[1];
+            if( $errorcode == 1062 )
+                return 'exist';
+            else
+                return 'pb';
+        }
+
+        //sinon ok :-)
+        return 'success';
     }
-    //function to install logon table
-    function cratetable($tablename){
-        //conect to DB
-        $this->dbconnect();
-        $qry = "CREATE TABLE IF NOT EXISTS ".$tablename." (
-              userid int(11) NOT NULL auto_increment,
-              useremail varchar(50) NOT NULL default '',
-              password varchar(50) NOT NULL default '',
-              userlevel int(11) NOT NULL default '0',
-              PRIMARY KEY  (userid)
-            )";
-        $result = mysql_query($qry) or die(mysql_error());
-        return;
+
+    function registerform($formname, $formclass, $formaction){
+        echo'
+        <form name="'.$formname.'" method="post" id="'.$formname.'" class="'.$formclass.'" enctype="application/x-www-form-urlencoded" action="'.$formaction.'">
+        <div><label for="username">email</label>
+        <input name="useremail" id="useremail" type="email"></div>
+        <div><label for="passwd">Passwd</label>
+        <input name="passwd" id="passwd" type="passwd"></div>
+        <div><input name="submit" id="submit" value="Reset Password" type="submit"></div>
+        </form>
+         
+        ';
     }
 }
 ?>
