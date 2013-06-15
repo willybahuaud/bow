@@ -15,7 +15,7 @@ class logmein {
     var $password_logon = '';       //Database PASSWORD
  
     //table fields
-    var $user_table = 'logon';          //Users table name
+    var $user_table = 'users';          //Users table name
     var $user_column = 'useremail';     //USERNAME column (value MUST be valid email)
     var $pass_column = 'password';      //PASSWORD column
     var $user_level = 'userlevel';      //(optional) userlevel column
