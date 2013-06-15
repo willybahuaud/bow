@@ -39,16 +39,17 @@ function read_flux($table,$id,$url){
 function add_flux($url){
 
 	$sql= $this->dbh->exec("INSERT INTO flux (id,url) VALUES('','$url')");
-	// $result = mysql_query($sql) or (mysql_error());
 
 	if( ! $sql ){
-           //utilisateur existe ?
+           //flux existe ?
            $errorcode = $this->dbh->errorInfo();
            $errorcode = $errorcode[1];
            if( $errorcode == 1062 ){
+           }
+                }
 
-            $sql_id_flux = "SELECT id FROM flux WHERE url = '$url'";
-     $stmt = $this->dbh->query($sql_id_flux);
+    $sql_id_flux = "SELECT id FROM flux WHERE url = '$url'";
+    $stmt = $this->dbh->query($sql_id_flux);
 
 
 	$row = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -58,11 +59,7 @@ function add_flux($url){
 
 
     return;
-
-           }else{
-               return false;
-               }
-       }
+      
 
      
    }
