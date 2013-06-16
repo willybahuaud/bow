@@ -1,0 +1,175 @@
+@import url(http://fonts.googleapis.com/css?family=Fugaz+One);
+@import url(http://fonts.googleapis.com/css?family=Lato);
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+input:focus,textarea:focus{
+	outline:none;
+}
+
+/*----------------------------------------------------------DIVERS--------------------------------------------------------------*/
+html, body {
+	height: 100%;
+	background: url(img/noise.png) #101010;
+	color:#101010;
+	font-family: 'Lato', sans-serif;
+	line-height: 1.5em;
+}
+h1 {
+font-size: 2.2em;
+margin-bottom: 1em;
+}
+.input-text {
+	background: url(img/noise.png) rgb(236, 236, 236);
+	padding: 0.5em;
+	border: none;
+	border-radius: 2em;
+	border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+	-webkit-transition: all 500ms ease;
+	-moz-transition: all 500ms ease;
+	-ms-transition: all 500ms ease;
+	-o-transition: all 500ms ease;
+	transition: all 500ms ease;
+}
+.input-text:focus{
+	background:white;
+	border-radius: 0.2em;
+}
+h1,h2,h3,h4,h5,h6{
+		font-family: 'Fugaz One', sans-serif;	
+}
+/*----------------------------------------------------------TOP BAR--------------------------------------------------------------*/
+.topbar {
+	background: url(img/noise.png) #101010;
+	position: fixed;
+	height: 90px;
+	width: 100%;
+}
+.logo img {
+	height: 80px;
+	margin-top: 5px;
+	margin-left: 1em;
+}
+.login-box {
+	position: absolute;
+	top: 30px;
+	right: 1em;
+}
+.login-form input[type="submit"] {
+	background: #ff9148;
+	border: none;
+	padding: 0.5em;
+	border-radius: 2em;
+	box-shadow: 0 2px 0 #ff6600;
+	color: white;
+	text-shadow: 0 1px 0 rgba(0, 0, 0, 0.2);
+	cursor:pointer;
+}
+.login-form input[type="submit"]:hover {
+	box-shadow: 0 1px 0 #ff6600;
+	display: inline-block;
+	margin-bottom: 2px;
+	vertical-align: bottom;
+}
+/*----------------------------------------------------------CONTENT--------------------------------------------------------------*/
+.content {
+	padding-top: 90px;
+}
+.content article {
+	padding: 1em;	
+	border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+	border-top: 1px solid rgba(255, 255, 255, 0.1);
+	background: url(img/noise.png) rgb(226, 214, 206);
+}
+.content .register-box {
+	background: url(img/noise.png) #ff9148;
+	text-align: center;
+}
+.register-box h2 {
+	font-size: 2em;
+	margin-top: 1em;
+}
+.register-form {	
+	margin-top: 2em;
+}
+.register-form input[type="submit"] {
+	background: #101010;
+	border: none;
+	padding: 0.5em;
+	border-radius: 2em;
+	box-shadow: 0 2px 0 rgb(0, 0, 0);
+	color: white;
+	text-shadow: 0 1px 0 rgba(0, 0, 0, 0.2);
+	cursor: pointer;
+}
+.register-form  input[type="submit"]:hover {
+	box-shadow: 0 1px 0 #000;
+	display: inline-block;
+	margin-bottom: 2px;
+	vertical-align: bottom;
+}
+.article-separator {
+	margin-top: 2em;
+	position: relative;
+}
+.article-separator:before {
+	content: "";
+	position: absolute;
+	width: 100%;
+	height: 1px;
+	background: rgba(16, 16, 16, 0.10);
+	box-shadow: 0 1px 0 rgba(255, 255, 255, 0.1);
+	left: 0;
+	top: 12px;
+}
+.article-separator span {
+	position: relative;
+	z-index: 1;
+	background: #ff9148;
+	padding: 0 1em 0 1em;
+}
+.hello-world{
+	font: 1.2em 'Fugaz One', sans-serif;
+	color:#FFF;
+}

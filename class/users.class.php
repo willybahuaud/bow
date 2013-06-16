@@ -21,7 +21,7 @@ class logmein {
 
     public function __construct()
     {
-        require_once('../connect.php');
+        require_once(realpath(dirname(dirname(__FILE__))).'/connect.php');
         $sql = new sql();
         $this->dbh = new PDO("mysql:host={$sql->hostname};dbname={$sql->database}",$sql->username,$sql->password);
     }
@@ -168,15 +168,11 @@ Your new password is: ".$newpassword."
         //conect to DB
         echo'
 <form name="'.$formname.'" method="post" id="'.$formname.'" class="'.$formclass.'" enctype="application/x-www-form-urlencoded" action="'.$formaction.'">
-<div><label for="username">Username</label>
-<input name="username" id="username" type="text"></div>
-<div><label for="password">Password</label>
-<input name="passwd" id="passwd" type="password"></div>
-<input name="action" id="action" value="login" type="hidden">
-<div>
-<input name="submit" id="submit" value="Login" type="submit"></div>
-</form>
- 
+    <input type="email" class="input-text" placeholder="email" name="username">
+    <input name="action" id="action" value="login" type="hidden">
+    <input type="password" class="input-text" placeholder="password" name="passwd">
+    <input type="submit" value="Log in">
+</form> 
 ';
     }
 
@@ -206,13 +202,11 @@ Your new password is: ".$newpassword."
     function registerform($formname, $formclass, $formaction){
         echo'
         <form name="'.$formname.'" method="post" id="'.$formname.'" class="'.$formclass.'" enctype="application/x-www-form-urlencoded" action="'.$formaction.'">
-        <div><label for="username">email</label>
-        <input name="useremail" id="useremail" type="email"></div>
-        <div><label for="passwd">Passwd</label>
-        <input name="passwd" id="passwd" type="passwd"></div>
-        <div><input name="submit" id="submit" value="Reset Password" type="submit"></div>
-        </form>
-         
+            <input type="email" class="input-text" placeholder="email" name="username">
+            <input name="action" id="action" value="join" type="hidden">
+            <input type="password" class="input-text" placeholder="password" name="passwd">
+            <input type="submit" value="Join">
+        </form> 
         ';
     }
 
