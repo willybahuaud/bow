@@ -14,6 +14,7 @@ $log = new logmein(); ?>
             else
                 $infos = $log->get_user_infos();
                 echo sprintf( '<p class="hello-world">Welcome her %s</p>', $infos['useremail']);
+                echo '<button type="button" id="logout">Se déconnecter</button>';
             ?>
         </div>
     </div>

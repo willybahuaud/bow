@@ -13,4 +13,14 @@ jQuery(document).ready(function($){
         });
     });
 
+    $(document).on('click','#logout',function(){
+        $.ajax({
+            type: "POST",
+            url: "logout.php",
+            success: function(msg){
+                window.location.reload();
+            }
+        });
+    });
+
 });
