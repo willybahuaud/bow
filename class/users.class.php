@@ -253,5 +253,19 @@ Your new password is: ".$newpassword."
          
         ';
     }
+
+    function is_user_connected(){
+        if( ! isset( $_SESSION['loggedin'] ) || $this->logincheck($_SESSION['loggedin'], "users", "passwd", "useremail") == false)
+            return false;
+        else
+            return true;
+    }
+
+    function get_user_infos(){
+        if( isset( $_SESSION['id_user'] ) ) {
+            $fields = $this->dbh->query("SELECT * FROM {$this->user_table} WHERE userid = {$_SESSION['id_user']}");
+            return $fields->fetch();
+        }
+    }
 }
 ?>
