@@ -224,7 +224,7 @@ Your new password is: ".$newpassword."
     function createuser($email,$passwd){
         $passwd = md5( $passwd );
         
-        $result = $this->dbh->exec("INSERT INTO users VALUES ('','$email', '$passwd', 1)");
+        $result = $this->dbh->exec("INSERT INTO users (userid, useremail, password, userlevel) VALUES ('','$email', '$passwd', 1)");
         // var_dump($result);
         //erreur ?
         if( ! $result ){
@@ -233,11 +233,14 @@ Your new password is: ".$newpassword."
             $errorcode = $errorcode[1];
             if( $errorcode == 1062 )
                 return 'exist';
-            else
+            else{
+                var_dump($this->dbh->errorInfo());
                 return 'pb';
+            }
         }
 
         //sinon ok :-)
+        $this->mail_to_user($this->dbh->lastInsertId(), 'Welcome to Gazr', 'You just subscribe a Gazr account');
         return 'success';
     }
 
@@ -264,8 +267,62 @@ Your new password is: ".$newpassword."
     function get_user_infos(){
         if( isset( $_SESSION['id_user'] ) ) {
             $fields = $this->dbh->query("SELECT * FROM {$this->user_table} WHERE userid = {$_SESSION['id_user']}");
-            return $fields->fetch();
+            return $fields->fetch(PDO::FETCH_ASSOC);
         }
+    }
+
+    function profile_form(){
+        $infos = $this->get_user_infos();
+        echo '<form action="" method="post">';
+        var_dump($infos);
+        foreach($infos as $k => $info) {
+            switch($k){
+                case 'useremail':
+                    echo '<div><label for="email">Email</label>';
+                    echo '<input type="email" name="email[0]" value="'.$info.'">';
+                    echo '<input type="email" name="email[1]">';
+                    echo '</div>';
+                    break;
+                case 'password':
+                    echo '<div><label for="password">Password</label>';
+                    echo '<input type="password" name="password[0]">';
+                    echo '<input type="password" name="password[1]">';
+                    echo '</div>';
+                    break;
+                case 'name':
+                    echo '<div><label for="name">Name</label>';
+                    echo '<input type="text" name="name" value="'.$info.'">';
+                    echo '</div>';
+                    break;
+                case 'first_name':
+                    echo '<div><label for="first_name">First name</label>';
+                    echo '<input type="text" name="firstname" value="'.$info.'">';
+                    echo '</div>';
+                    break;
+                case 'last_name':
+                    echo '<div><label for="last_name">Lastname</label>';
+                    echo '<input type="text" name="lastname" value="'.$info.'">';
+                    echo '</div>';
+                    break;
+                case 'indice':
+                    break;
+                default:
+            }
+        }
+        echo '<input type="submit" value="Update profile">';
+        echo '</form>';
+    }
+
+    function mail_to_user($id_user, $subject, $message){
+        //retrieve user mail
+        $email = $this->dbh->query("SELECT useremail FROM users WHERE userid = '$id_user'");
+        $email = $email->fetch(PDO::FETCH_ASSOC);
+
+        $headers  = 'MIME-Version: 1.0' . "\r\n";
+        $headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
+        $headers .= 'From: Gazr <noreplay@gazr.com>'. "\r\n";
+        $send = @mail( $email['useremail'], $subject, $message, $headers );
+        return $send;
     }
 }
 ?>
