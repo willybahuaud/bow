@@ -1,5 +1,5 @@
 <?php
-include("../class/users.class.php");
+require_once("../class/users.class.php");
 $log = new logmein();
 
 //try to log if form not empty

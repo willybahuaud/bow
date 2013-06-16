@@ -4,20 +4,10 @@
 error_reporting(E_ALL);
 //start session
 // session_start();
-
 class flux {
 
 // inclusion de la classe magpierss
 
-
-
-
-
-    var $hostname_logon = 'localhost';      //Database server LOCATION
-    var $database_logon = 'bow';       //Database NAME
-    var $username_logon = 'root';       //Database USERNAME
-    var $password_logon = '';       //Database PASSWORD
- 
     //table fields
     var $user_table = 'users';          //Users table name
     var $user_column = 'useremail';     //USERNAME column (value MUST be valid email)
@@ -28,10 +18,11 @@ class flux {
     var $encrypt = true;       //set to true to use md5 encryption for the password
  
     //connect to database
-public function __construct()
+    public function __construct()
    {
-  
-       $this->dbh = new PDO("mysql:host={$this->hostname_logon};dbname={$this->database_logon}",$this->username_logon,$this->password_logon);
+        require_once('../connect.php');
+        $sql = new sql();
+        $this->dbh = new PDO("mysql:host={$sql->hostname};dbname={$sql->database}",$sql->username,$sql->password);
    }
  
 
