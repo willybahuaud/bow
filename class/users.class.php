@@ -5,16 +5,10 @@
 //For security reasons, don't display any errors or warnings. Comment out in DEV.
 // error_reporting(0);
 //start session
+
 session_start();
 class logmein {
 
-    //database setup
-       //MAKE SURE TO FILL IN DATABASE INFO
-    var $hostname_logon = 'localhost';      //Database server LOCATION
-    var $database_logon = 'bow';       //Database NAME
-    var $username_logon = 'root';       //Database USERNAME
-    var $password_logon = '';       //Database PASSWORD
- 
     //table fields
     var $user_table  = 'users';          //Users table name
     var $user_column = 'useremail';     //USERNAME column (value MUST be valid email)
@@ -23,11 +17,13 @@ class logmein {
  
     //encryption
     var $encrypt = true;       //set to true to use md5 encryption for the password
- 
+    
 
     public function __construct()
     {
-        $this->dbh = new PDO("mysql:host={$this->hostname_logon};dbname={$this->database_logon}",$this->username_logon,$this->password_logon);
+        require_once('../connect.php');
+        $sql = new sql();
+        $this->dbh = new PDO("mysql:host={$sql->hostname};dbname={$sql->database}",$sql->username,$sql->password);
     }
 
  
@@ -60,24 +56,6 @@ class logmein {
         }
     }
  
-    //prevent injection
-    function qry($query) {
-      $this->dbconnect();
-      $args  = func_get_args();
-      $query = array_shift($args);
-      $query = str_replace("?", "%s", $query);
-      $args  = array_map('mysql_real_escape_string', $args);
-      array_unshift($args,$query);
-      $query = call_user_func_array('sprintf',$args);
-      $result = mysql_query($query) or die(mysql_error());
-          if($result){
-            return $result;
-          }else{
-             $error = "Error";
-             return $result;
-          }
-    }
- 
     //logout function
     function logout(){
         session_destroy();
@@ -97,19 +75,15 @@ class logmein {
         if($this->user_table == ""){
             $this->user_table = $user_table;
         }
-        //exectue query
+        //execute query
         $result = $this->dbh->query("SELECT COUNT(*) FROM ".$this->user_table." WHERE ".$this->pass_column." = ' $logincode'");
         $rownum = count($result);
-        // var_dump($rownum);
-        // $rownum = mysql_num_rows($result);
-        // //return true if logged in and false if not
-        // if($row != "Error"){
+
             if($rownum > 0){
                 return true;
             }else{
                 return false;
             }
-        // }
     }
  
     //reset password
@@ -205,21 +179,6 @@ Your new password is: ".$newpassword."
  
 ';
     }
-    //reset password form
-//     function resetform($formname, $formclass, $formaction){
-//         //conect to DB
-//         $this->dbconnect();
-//         echo'
-// <form name="'.$formname.'" method="post" id="'.$formname.'" class="'.$formclass.'" enctype="application/x-www-form-urlencoded" action="'.$formaction.'">
-// <div><label for="username">Username</label>
-// <input name="username" id="username" type="text"></div>
-// <input name="action" id="action" value="resetlogin" type="hidden">
-// <div>
-// <input name="submit" id="submit" value="Reset Password" type="submit"></div>
-// </form>
- 
-// ';
-//     }
 
     function createuser($email,$passwd){
         $passwd = md5( $passwd );
