@@ -3,7 +3,7 @@
 //For security reasons, don't display any errors or warnings. Comment out in DEV.
 error_reporting(E_ALL);
 //start session
-session_start();
+// session_start();
 
 class flux {
 
@@ -36,7 +36,7 @@ function read_flux($table,$id,$url){
 
 }
 
-function add_flux($url){
+function add_flux($url,$id_user){
 
 	$sql= $this->dbh->exec("INSERT INTO flux (id,url) VALUES('','$url')");
 

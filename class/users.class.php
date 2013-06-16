@@ -52,6 +52,7 @@ class logmein {
             $_SESSION['loggedin'] = $row['password'];
             //userlevel session is optional. Use it if you have different user levels
             $_SESSION['userlevel'] = $row['userlevel'];
+            $_SESSION['id_user'] = $row['userid'];
             return true;
         }else{
             session_destroy();
