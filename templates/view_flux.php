@@ -7,16 +7,6 @@ if( ! isset( $_SESSION['loggedin'] ) || $log->logincheck($_SESSION['loggedin'], 
     die ('U R no connected U no ?');
 }
 
-echo "<form action='' method='post'>
-<label>Add RSS feed : <input type='url' name='url'></label>
-<input type='submit' value='submit'>
-</form>";
-
-if(isset($_POST['url'])){
-	$f = new flux();  
-echo $f->add_flux($_SESSION['id_user'],$_POST['url']);
-
-}
-
-
+$f = new flux();  
+echo $f->read_flux($_SESSION['id_user']);
 ?>

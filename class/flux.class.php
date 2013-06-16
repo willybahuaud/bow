@@ -7,6 +7,8 @@ error_reporting(E_ALL);
 
 class flux {
 
+// inclusion de la classe magpierss
+
 
 
 
@@ -28,15 +30,46 @@ class flux {
     //connect to database
 public function __construct()
    {
+  
        $this->dbh = new PDO("mysql:host={$this->hostname_logon};dbname={$this->database_logon}",$this->username_logon,$this->password_logon);
    }
  
 
-function read_flux($table,$id,$url){
+
+
+function read_flux($id_user){
+	$sql_read = "SELECT url FROM flux JOIN subscriptions ON subscriptions.id_flux = flux.id WHERE id_user='$id_user'";
+	$stmt = $this->dbh->query($sql_read);
+	$row = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+
+	foreach($row as $key=>$r){
+		// echo ($r['url']);
+		if(!@$fluxrss=simplexml_load_file($r['url'])){
+		throw new Exception('Flux introuvable');
+		}
+		if(empty($fluxrss->channel->title) || empty($fluxrss->channel->description) || empty($fluxrss->channel->item->title))
+		throw new Exception('Flux invalide');
+
+		echo '<h3>'.(string)$fluxrss->channel->title.'</h3>
+		<p>'.(string)$fluxrss->channel->description.'</p>';
+
+		$i = 0;
+		$nb_affichage = 5;
+		echo '<ul>';
+		foreach($fluxrss->channel->item as $item){
+		echo '<li><a href="'.(string)$item->link.'">'.(string)$item->title.'</a> Posted at '.(string)date('Y/m/d - G\hi',strtotime($item->pubDate)).'</li>';
+		if(++$i>=$nb_affichage)
+		break;
+		}
+		echo '</ul>';
+	}
+	
+return;
 
 }
 
-function add_flux($url,$id_user){
+function add_flux($id_user,$url){
 
 	$sql= $this->dbh->exec("INSERT INTO flux (id,url) VALUES('','$url')");
 
@@ -60,7 +93,6 @@ function add_flux($url,$id_user){
 	$stmt = $this->dbh->query($sql_check_sub);
 	$row = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-	$id_user = 1;
 	foreach($row as $key=>$r){
 		if($id_user ==($r['id_user'])){
 			return 'you are also abonned at this RSS';
@@ -68,7 +100,7 @@ function add_flux($url,$id_user){
 		}	
 	}
 
-    $sql2 = $this->dbh->exec("INSERT INTO subscriptions (id,id_flux,id_user) VALUES('','$id_flux', 1)");
+    $sql2 = $this->dbh->exec("INSERT INTO subscriptions (id,id_flux,id_user) VALUES('','$id_flux', '$id_user')");
 
 
 
