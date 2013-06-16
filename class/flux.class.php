@@ -114,7 +114,7 @@ function add_flux($id_user,$url){
  function remove_flux(){
 
  	$id_flux = $_POST['id'];
- 	$sql_delete=  $this->dbh->exec("DELETE FROM flux WHERE id='$id_flux'");
+ 	// $sql_delete=  $this->dbh->exec("DELETE FROM flux WHERE id='$id_flux'");
  	$sql_delete2 = $this->dbh->exec("DELETE FROM subscriptions WHERE id_flux='$id_flux'");
 
  	return;
