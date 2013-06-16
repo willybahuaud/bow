@@ -1,6 +1,7 @@
 <?php
 require_once('../class/flux.class.php');
 include("../class/users.class.php");
+include_once("header.php");
 $log = new logmein();
 
 if( ! isset( $_SESSION['loggedin'] ) || $log->logincheck($_SESSION['loggedin'], "users", "passwd", "useremail") == false){
@@ -18,5 +19,5 @@ echo $f->add_flux($_SESSION['id_user'],$_POST['url']);
 
 }
 
-
+echo "<a href='view_flux.php'>See RSS feed</a>";
 ?>

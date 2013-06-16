@@ -38,25 +38,26 @@ public function __construct()
 
 
 function read_flux($id_user){
-	$sql_read = "SELECT url FROM flux JOIN subscriptions ON subscriptions.id_flux = flux.id WHERE id_user='$id_user'";
+	$sql_read = "SELECT flux.id as id_flux,url FROM flux JOIN subscriptions ON subscriptions.id_flux = flux.id WHERE id_user='$id_user'";
 	$stmt = $this->dbh->query($sql_read);
 	$row = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 
 	foreach($row as $key=>$r){
-		// echo ($r['url']);
+		
 		if(!@$fluxrss=simplexml_load_file($r['url'])){
 		throw new Exception('Flux introuvable');
 		}
 		if(empty($fluxrss->channel->title) || empty($fluxrss->channel->description) || empty($fluxrss->channel->item->title))
 		throw new Exception('Flux invalide');
-
+		echo '<ul data-flux="'.$r['id_flux'].'">';
 		echo '<h3>'.(string)$fluxrss->channel->title.'</h3>
 		<p>'.(string)$fluxrss->channel->description.'</p>';
 
 		$i = 0;
 		$nb_affichage = 5;
-		echo '<ul>';
+		
+		echo '<input type="button" class="delete" value="Delete">';
 		foreach($fluxrss->channel->item as $item){
 		echo '<li><a href="'.(string)$item->link.'">'.(string)$item->title.'</a> Posted at '.(string)date('Y/m/d - G\hi',strtotime($item->pubDate)).'</li>';
 		if(++$i>=$nb_affichage)
@@ -109,6 +110,17 @@ function add_flux($id_user,$url){
 
      
    }
+
+ function remove_flux(){
+
+ 	$id_flux = $_POST['id'];
+ 	$sql_delete=  $this->dbh->exec("DELETE FROM flux WHERE id='$id_flux'");
+ 	$sql_delete2 = $this->dbh->exec("DELETE FROM subscriptions WHERE id_flux='$id_flux'");
+
+ 	return;
+
+ }
+
 
 
 }
