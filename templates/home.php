@@ -11,10 +11,11 @@ $log = new logmein(); ?>
             <?php 
             if( ! $log->is_user_connected() )
                 $log->loginform('','login-form', '');
-            else
+            else{
                 $infos = $log->get_user_infos();
                 echo sprintf( '<p class="hello-world">Welcome her %s</p>', $infos['useremail']);
                 echo '<button type="button" id="logout">Se déconnecter</button>';
+            }
             ?>
         </div>
     </div>
