@@ -23,7 +23,7 @@ $log = new logmein(); ?>
         <?php if( ! $log->is_user_connected() ) { ?>
         <article  class="register-box">
             <h2>Join gazr now!</h2>
-            <?php $log->registerform('','register-form', ''); ?>
+            <?php $log->registerform('','register-form', 'validate_user.php'); ?>
             <div class="article-separator"><span>Or</span></div>
             <ul class="register-socials">
                 <li><a href="" class="login-facebook"></a></li>
