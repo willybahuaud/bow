@@ -179,7 +179,7 @@ Your new password is: ".$newpassword."
     function createuser($email,$passwd){
         $passwd = md5( $passwd );
         
-        $result = $this->dbh->exec("INSERT INTO users (userid, useremail, password, userlevel) VALUES ('','$email', '$passwd', 1)");
+        $result = $this->dbh->exec("INSERT INTO users ( useremail, password, userlevel) VALUES ('$email', '$passwd', 1)");
         // var_dump($result);
         //erreur ?
         if( ! $result ){
