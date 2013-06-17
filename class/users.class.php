@@ -202,7 +202,7 @@ Your new password is: ".$newpassword."
     function registerform($formname, $formclass, $formaction){
         echo'
         <form name="'.$formname.'" method="post" id="'.$formname.'" class="'.$formclass.'" enctype="application/x-www-form-urlencoded" action="'.$formaction.'">
-            <input type="email" class="input-text" placeholder="email" name="username">
+            <input type="email" class="input-text" placeholder="email" name="useremail">
             <input name="action" id="action" value="join" type="hidden">
             <input type="password" class="input-text" placeholder="password" name="passwd">
             <input type="submit" value="Join">
