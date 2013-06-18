@@ -42,7 +42,7 @@ $log = new logmein(); ?>
             require_once('class/flux.class.php');
             $f = new flux();  
             echo $f->read_flux($_SESSION['gleenruser']['userid']);
-            echo "<a href='add_flux.php'>Add RSS feed</a>";
+            echo "<a href='templates/add_flux.php'>Add RSS feed</a>";
         echo ' </article>';
          } ?>
     </section>

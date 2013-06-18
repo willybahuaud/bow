@@ -69,7 +69,7 @@ class logmein {
     function createuser( $email, $passwd ) {
         $passwd = md5( $this->salt . $passwd );
         
-        $result = $this->dbh->exec("INSERT INTO users ( useremail, password, userlevel) VALUES ( ?, ?, 1 )");
+        $result = $this->dbh->prepare("INSERT INTO users ( useremail, password, userlevel) VALUES ( ?, ?, 1 )");
         $result->execute( array( $email, $passwd ) );
         // var_dump($result);
         //erreur ?
