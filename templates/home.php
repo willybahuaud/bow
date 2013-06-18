@@ -10,7 +10,7 @@ $log = new logmein(); ?>
         <div class="login-box">         
             <?php 
             if( ! $log->is_user_connected() )
-                $log->loginform('','login-form', '');
+                $log->loginform('','login-form','');
             else{
                 echo sprintf( '<p class="hello-world">Welcome her %s</p>', $log->get_user_infos('useremail'));
                 echo '<button type="button" id="logout">Se déconnecter</button>';
@@ -22,7 +22,7 @@ $log = new logmein(); ?>
         <?php if( ! $log->is_user_connected() ) { ?>
         <article  class="register-box">
             <h2>Join gleenr now!</h2>
-            <?php $log->registerform('','register-form', 'validate_user.php'); ?>
+            <?php $log->registerform('','register-form', $router->generate('user_create')); ?>
             <div class="article-separator"><span>Or</span></div>
             <ul class="register-socials">
                 <li><a href="" class="login-facebook"></a></li>
@@ -42,7 +42,7 @@ $log = new logmein(); ?>
             require_once('class/flux.class.php');
             $f = new flux();  
             echo $f->read_flux($_SESSION['gleenruser']['userid']);
-            echo "<a href='templates/add_flux.php'>Add RSS feed</a>";
+            echo '<a href="'.$router->generate('flux_add').'">Add RSS feed</a>';
         echo ' </article>';
          } ?>
     </section>
