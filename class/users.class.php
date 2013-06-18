@@ -6,12 +6,6 @@
 // error_reporting(0);
 class logmein {
 
-    //table fields
-    var $user_table  = 'users';          //Users table name
-    var $user_column = 'useremail';     //USERNAME column (value MUST be valid email)
-    var $pass_column = 'password';      //PASSWORD column
-    var $user_level  = 'userlevel';      //(optional) userlevel column
-
     public function __construct() {
         session_start();
         require_once( realpath( dirname( dirname( __FILE__ ) ) ) . '/connect.php' );
@@ -79,7 +73,7 @@ class logmein {
             $errorcode = $errorcode[1];
             if( $errorcode == 1062 )
                 return 'exist';
-            else{
+            else {
                 var_dump($this->dbh->errorInfo());
                 return 'pb';
             }
@@ -110,9 +104,9 @@ class logmein {
             if( $key = $auth[1] ) {
                 $_SESSION[ 'gleenruser' ] = (array) $user;
                 $this->setcookieuser( $user->userid, $key, 86400 * 3 );
-            }else
+            } else
                 $this->setcookieuser( $user->userid, '', -1 );
-        }elseif( isset( $_POST[ 'action' ] ) && $_POST[ 'action' ] == 'login')
+        } elseif( isset( $_POST[ 'action' ] ) && $_POST[ 'action' ] == 'login')
             $this->login( $_POST[ 'username' ], $_POST[ 'passwd' ] );
     }
 
@@ -137,7 +131,7 @@ class logmein {
                 return $fields->$field;
             else
                 return $fields;
-        }else return false;
+        } else return false;
     }
 
     function profile_form(){
@@ -190,7 +184,7 @@ class logmein {
         $headers  = 'MIME-Version: 1.0' . "\r\n";
         $headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
         $headers .= 'From: Gazr <noreplay@gazr.com>'. "\r\n";
-        $send = @mail( $email['useremail'], $subject, $message, $headers );
+        $send = @mail( $email[ 'useremail' ], $subject, $message, $headers );
         return $send;
     }
 }
