@@ -51,7 +51,7 @@ input:focus,textarea:focus{
 /*----------------------------------------------------------DIVERS--------------------------------------------------------------*/
 html, body {
 	height: 100%;
-	background: url(img/noise.png) #101010;
+	background: url(img/noise.png) #E2D6CE;
 	color:#101010;
 	font-family: 'Lato', sans-serif;
 	line-height: 1.5em;
@@ -120,8 +120,10 @@ h1,h2,h3,h4,h5,h6{
 	padding: 1em;	
 	border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 	border-top: 1px solid rgba(255, 255, 255, 0.1);
-	background: url(img/noise.png) rgb(226, 214, 206);
 }
+.content article:nth-last-of-type(1) {
+		border-bottom: none;
+	}
 .content .register-box {
 	background: url(img/noise.png) #ff9148;
 	text-align: center;
@@ -172,4 +174,10 @@ h1,h2,h3,h4,h5,h6{
 .hello-world{
 	font: 1.2em 'Fugaz One', sans-serif;
 	color:#FFF;
+}
+
+
+/*-----------------------------------------------SUITE INTEGRATION-------------------------------------------*/
+.content .flux-content {
+
 }

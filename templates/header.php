@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>gazr</title>
+    <title>gleenr</title>
     <link rel="shortcut icon" href="assets/img/favicon.ico">
     <link rel="stylesheet" href="assets/style.css">    
 </head>
