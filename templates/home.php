@@ -1,6 +1,6 @@
 <?php 
-include_once('header.php');
 require_once("class/users.class.php");
+include_once('header.php');
 $log = new logmein(); ?>
 <body>
     <div class="topbar">
@@ -12,8 +12,7 @@ $log = new logmein(); ?>
             if( ! $log->is_user_connected() )
                 $log->loginform('','login-form', '');
             else{
-                $infos = $log->get_user_infos();
-                echo sprintf( '<p class="hello-world">Welcome her %s</p>', $infos->useremail);
+                echo sprintf( '<p class="hello-world">Welcome her %s</p>', $log->get_user_infos('useremail'));
                 echo '<button type="button" id="logout">Se déconnecter</button>';
             }
             ?>

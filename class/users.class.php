@@ -4,9 +4,6 @@
 
 //For security reasons, don't display any errors or warnings. Comment out in DEV.
 // error_reporting(0);
-//start session
-
-session_start();
 class logmein {
 
     //table fields
@@ -14,16 +11,12 @@ class logmein {
     var $user_column = 'useremail';     //USERNAME column (value MUST be valid email)
     var $pass_column = 'password';      //PASSWORD column
     var $user_level  = 'userlevel';      //(optional) userlevel column
- 
-    //encryption
-    var $encrypt = true;       //set to true to use md5 encryption for the password
-    
 
-    public function __construct()
-    {
-        require_once(realpath(dirname(dirname(__FILE__))).'/connect.php');
+    public function __construct() {
+        session_start();
+        require_once( realpath( dirname( dirname( __FILE__ ) ) ) . '/connect.php' );
         $sql = new sql();
-        $this->dbh = new PDO("mysql:host={$sql->hostname};dbname={$sql->database}",$sql->username,$sql->password);
+        $this->dbh = new PDO( "mysql:host={$sql->hostname};dbname={$sql->database}", $sql->username, $sql->password );
         $this->salt = $sql->salt;
 
         // try to connect
@@ -32,20 +25,20 @@ class logmein {
 
  
     //login function
-    function login( $username, $password){
+    function login( $username, $password ) {
 
-        $password = md5($this->salt.$password);
+        $password = md5( $this->salt . $password );
 
-        //execute login via qry function that prevents MySQL injections
-        $result = $this->dbh->query("SELECT * FROM users WHERE useremail = '$username' AND password = '$password'");
+        $result = $this->dbh->prepare( "SELECT * FROM users WHERE useremail = ? AND password = ?" );
+        $result->execute( array( $username, $password ) );
         $user = $result->fetch(PDO::FETCH_OBJ);
 
-        if(count($user)){
+        if( $user ) {
 
             $_SESSION['gleenruser'] = (array) $user;
-            $key = sha1($user->useremail . $user->password . $_SERVER['REMOTE_ADDR']);
-            if(isset($_POST['remember']))
-                $this->setcookieuser( $user->userid, $key, 86400*3);
+            $key = sha1( $user->useremail . $user->password . $_SERVER['REMOTE_ADDR'] );
+            if( isset( $_POST[ 'remember' ] ) )
+                $this->setcookieuser( $user->userid, $key, 86400 * 3 );
 
             return true;
         }else{
@@ -55,15 +48,15 @@ class logmein {
     }
  
     //logout function
-    function logout(){
+    function logout() {
+        $this->setcookieuser( $user->userid, '', -1 );
         session_destroy();
         return;
     }
  
  
     //login form
-    function loginform($formname, $formclass, $formaction){
-        //conect to DB
+    function loginform( $formname, $formclass, $formaction ) {
         echo'<form name="'.$formname.'" method="post" id="'.$formname.'" class="'.$formclass.'" enctype="application/x-www-form-urlencoded" action="'.$formaction.'">
                 <input type="email" class="input-text" placeholder="email" name="username">
                 <input name="action" id="action" value="login" type="hidden">
@@ -73,10 +66,11 @@ class logmein {
             </form>';
     }
 
-    function createuser($email,$passwd){
-        $passwd = md5($this->salt.$passwd );
+    function createuser( $email, $passwd ) {
+        $passwd = md5( $this->salt . $passwd );
         
-        $result = $this->dbh->exec("INSERT INTO users ( useremail, password, userlevel) VALUES ('$email', '$passwd', 1)");
+        $result = $this->dbh->exec("INSERT INTO users ( useremail, password, userlevel) VALUES ( ?, ?, 1 )");
+        $result->execute( array( $email, $passwd ) );
         // var_dump($result);
         //erreur ?
         if( ! $result ){
@@ -92,7 +86,7 @@ class logmein {
         }
 
         //sinon ok :-)
-        $this->mail_to_user($this->dbh->lastInsertId(), 'Welcome to Gazr', 'You just subscribe a Gazr account');
+        // $this->mail_to_user($this->dbh->lastInsertId(), 'Welcome to Gazr', 'You just subscribe a Gazr account');
         return 'success';
     }
 
@@ -108,43 +102,47 @@ class logmein {
     }
 
     function try_to_connect_user() {
-        if(isset($_COOKIE['gleenrauth']) && ! isset($_SESSION['gleenruser'])){
-            $auth = $_COOKIE['gleenrauth'];
-            $auth = explode('-->', $auth);
+        if( isset( $_COOKIE[ 'gleenrauth' ] ) && ! isset( $_SESSION[ 'gleenruser' ] ) ) {
+            $auth = $_COOKIE[ 'gleenrauth' ];
+            $auth = explode( '-->', $auth );
             $user = $this->get_user_infos();
-            $key  = sha1($user->useremail . $user->password . $_SERVER['REMOTE_ADDR']);
-            if($key = $auth[1]){
-                $_SESSION['gleenruser'] = (array) $user;
-                $this->setcookieuser( $user->userid, $key, 86400*3);
-            }else{
+            $key  = sha1( $user->useremail . $user->password . $_SERVER['REMOTE_ADDR'] );
+            if( $key = $auth[1] ) {
+                $_SESSION[ 'gleenruser' ] = (array) $user;
+                $this->setcookieuser( $user->userid, $key, 86400 * 3 );
+            }else
                 $this->setcookieuser( $user->userid, '', -1 );
-            }
-        }
+        }elseif( isset( $_POST[ 'action' ] ) && $_POST[ 'action' ] == 'login')
+            $this->login( $_POST[ 'username' ], $_POST[ 'passwd' ] );
     }
 
-    function setcookieuser( $id, $cle ,$time){
+    function setcookieuser( $id, $cle ,$time ) {
         setcookie('gleenrauth', $id .'-->'. $cle, time() + $time, '/', 'localhost', false, true );
     }
 
-    function is_user_connected(){
-        if( isset( $_SESSION['gleenruser']['userid'] ) )
+    function is_user_connected() {
+        if( isset( $_SESSION[ 'gleenruser' ][ 'userid' ] ) )
             return true;
         else
             return false;
     }
 
-    function get_user_infos(){
-        if($this->is_user_connected()) {
-            $id = $_SESSION['gleenruser']['userid'];
-            $fields = $this->dbh->query("SELECT * FROM {$this->user_table} WHERE userid = {$id}");
-            return $fields->fetch(PDO::FETCH_OBJ);
+    function get_user_infos( $field = false ){
+        if( $this->is_user_connected() ) {
+            $id = $_SESSION[ 'gleenruser' ][ 'userid' ];
+            $fields = $this->dbh->prepare( "SELECT * FROM users WHERE userid = ?" );
+            $fields->execute( array( $id ) );
+            $fields = $fields->fetch(PDO::FETCH_OBJ);
+            if( false !== $field )
+                return $fields->$field;
+            else
+                return $fields;
         }else return false;
     }
 
     function profile_form(){
         $infos = $this->get_user_infos();
         echo '<form action="" method="post">';
-        var_dump($infos);
         foreach($infos as $k => $info) {
             switch($k){
                 case 'useremail':
@@ -183,9 +181,10 @@ class logmein {
         echo '</form>';
     }
 
-    function mail_to_user($id_user, $subject, $message){
+    function mail_to_user( $id_user, $subject, $message ) {
         //retrieve user mail
-        $email = $this->dbh->query("SELECT useremail FROM users WHERE userid = '$id_user'");
+        $email = $this->dbh->prepare( "SELECT useremail FROM users WHERE userid = ?" );
+        $email->execute( array( $id_user ) );
         $email = $email->fetch(PDO::FETCH_ASSOC);
 
         $headers  = 'MIME-Version: 1.0' . "\r\n";

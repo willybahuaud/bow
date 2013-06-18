@@ -1,10 +1,10 @@
 <?php
-require_once("class/users.class.php");
-$log = new logmein();
+// require_once("class/users.class.php");
+// $log = new logmein();
 
 //try to log if form not empty
-if(isset($_POST['action']) && $_POST['action']== 'login')
-    $log->login( $_POST['username'], $_POST['passwd']);
+// if(isset($_POST['action']) && $_POST['action']== 'login')
+//     $log->login( $_POST['username'], $_POST['passwd']);
 
 // if( ! $log->is_user_connected() ) {
     
