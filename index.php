@@ -4,7 +4,7 @@ $log = new logmein();
 
 //try to log if form not empty
 if(isset($_POST['action']) && $_POST['action']== 'login')
-    $log->login('users', $_POST['username'], $_POST['passwd']);
+    $log->login( $_POST['username'], $_POST['passwd']);
 
 // if( ! $log->is_user_connected() ) {
     
@@ -16,6 +16,7 @@ if(isset($_POST['action']) && $_POST['action']== 'login')
     // $infos = $log->get_user_infos();
     // echo sprintf( 'Welcome her %s', $infos['useremail']);
 
+    // var_dump($log->is_user_connected(),$_SESSION,$_COOKIE);
     require('templates/home.php');
 // }
 ?>

@@ -10,8 +10,8 @@ if( isset( $_POST['useremail'], $_POST['passwd'] ) ) {
     $state = $log->createuser($email, $passwd);
 
     var_dump($state);
-    // if( $state == 'success' )
-    //     echo 'insertion reussie';
-    // if( $state == 'exist' )
-    //     echo 'l\'utiliseur existe déjà';
+    if( $state == 'success' )
+        echo 'insertion reussie';
+    if( $state == 'exist' )
+        echo 'l\'utiliseur existe déjà';
 }

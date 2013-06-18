@@ -13,7 +13,7 @@ $log = new logmein(); ?>
                 $log->loginform('','login-form', '');
             else{
                 $infos = $log->get_user_infos();
-                echo sprintf( '<p class="hello-world">Welcome her %s</p>', $infos['useremail']);
+                echo sprintf( '<p class="hello-world">Welcome her %s</p>', $infos->useremail);
                 echo '<button type="button" id="logout">Se déconnecter</button>';
             }
             ?>
@@ -42,7 +42,7 @@ $log = new logmein(); ?>
          echo '<article class="article-content">';
             require_once('class/flux.class.php');
             $f = new flux();  
-            echo $f->read_flux($_SESSION['id_user']);
+            echo $f->read_flux($_SESSION['gleenruser']['userid']);
             echo "<a href='add_flux.php'>Add RSS feed</a>";
         echo ' </article>';
          } ?>

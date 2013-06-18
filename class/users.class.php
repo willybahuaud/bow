@@ -24,33 +24,29 @@ class logmein {
         require_once(realpath(dirname(dirname(__FILE__))).'/connect.php');
         $sql = new sql();
         $this->dbh = new PDO("mysql:host={$sql->hostname};dbname={$sql->database}",$sql->username,$sql->password);
+        $this->salt = $sql->salt;
+
+        // try to connect
+        $this->try_to_connect_user();
     }
 
  
     //login function
-    function login($table, $username, $password){
+    function login( $username, $password){
 
-        //make sure table name is set
-        if($this->user_table == ""){
-            $this->user_table = $table;
-        }
-        //check if encryption is used
-        if($this->encrypt == true){
-            $password = md5($password);
-        }
+        $password = md5($this->salt.$password);
+
         //execute login via qry function that prevents MySQL injections
         $result = $this->dbh->query("SELECT * FROM users WHERE useremail = '$username' AND password = '$password'");
-        $row = $result->fetch(PDO::FETCH_ASSOC);
+        $user = $result->fetch(PDO::FETCH_OBJ);
 
-        if($row['useremail'] !="" && $row['password'] !=""){
-            //register sessions
-            //you can add additional sessions here if needed
-            $_SESSION['loggedin'] = $row['password'];
-            //userlevel session is optional. Use it if you have different user levels
-            $_SESSION['userlevel'] = $row['userlevel'];
-            $_SESSION['id_user'] = $row['userid'];
+        if(count($user)){
 
-            //http://stackoverflow.com/questions/1354999/keep-me-logged-in-the-best-approach
+            $_SESSION['gleenruser'] = (array) $user;
+            $key = sha1($user->useremail . $user->password . $_SERVER['REMOTE_ADDR']);
+            if(isset($_POST['remember']))
+                $this->setcookieuser( $user->userid, $key, 86400*3);
+
             return true;
         }else{
             session_destroy();
@@ -64,122 +60,21 @@ class logmein {
         return;
     }
  
-    //check if loggedin
-    function logincheck($logincode, $user_table, $pass_column, $user_column){
-
-        //make sure password column and table are set
-        if($this->pass_column == ""){
-            $this->pass_column = $pass_column;
-        }
-        if($this->user_column == ""){
-            $this->user_column = $user_column;
-        }
-        if($this->user_table == ""){
-            $this->user_table = $user_table;
-        }
-        //execute query
-        $result = $this->dbh->query("SELECT COUNT(*) FROM ".$this->user_table." WHERE ".$this->pass_column." = ' $logincode'");
-        $rownum = count($result);
-
-            if($rownum > 0){
-                return true;
-            }else{
-                return false;
-            }
-    }
- 
-    //reset password
-    function passwordreset($username, $user_table, $pass_column, $user_column){
-        //conect to DB
-        $this->dbconnect();
-        //generate new password
-        $newpassword = $this->createPassword();
- 
-        //make sure password column and table are set
-        if($this->pass_column == ""){
-            $this->pass_column = $pass_column;
-        }
-        if($this->user_column == ""){
-            $this->user_column = $user_column;
-        }
-        if($this->user_table == ""){
-            $this->user_table = $user_table;
-        }
-        //check if encryption is used
-        if($this->encrypt == true){
-            $newpassword_db = md5($newpassword);
-        }else{
-            $newpassword_db = $newpassword;
-        }
- 
-        //update database with new password
-        $qry = "UPDATE {$this->user_table} SET {$this->pass_column} = '{$newpassword_db}' WHERE {$this->user_column} = '" . stripslashes($username) . "'";
-        $result = mysql_query($qry) or die(mysql_error());
- 
-        $to = stripslashes($username);
-        //some injection protection
-        $illegals=array("%0A","%0D","%0a","%0d","bcc:","Content-Type","BCC:","Bcc:","Cc:","CC:","TO:","To:","cc:","to:");
-        $to = str_replace($illegals, "", $to);
-        $getemail = explode("@",$to);
- 
-        //send only if there is one email
-        if(sizeof($getemail) > 2){
-            return false;
-        }else{
-            //send email
-            $from = $_SERVER['SERVER_NAME'];
-            $subject = "Password Reset: ".$_SERVER['SERVER_NAME'];
-            $msg = "
- 
-Your new password is: ".$newpassword."
- 
-";
- 
-            //now we need to set mail headers
-            $headers = "MIME-Version: 1.0 rn" ;
-            $headers .= "Content-Type: text/html; \r\n" ;
-            $headers .= "From: $from  \r\n" ;
- 
-            //now we are ready to send mail
-            $sent = mail($to, $subject, $msg, $headers);
-            if($sent){
-                return true;
-            }else{
-                return false;
-            }
-        }
-    }
- 
-    //create random password with 8 alphanumerical characters
-    function createPassword() {
-        $chars = "abcdefghijkmnopqrstuvwxyz023456789";
-        srand((double)microtime()*1000000);
-        $i = 0;
-        $pass = '' ;
-        while ($i <= 7) {
-            $num = rand() % 33;
-            $tmp = substr($chars, $num, 1);
-            $pass = $pass . $tmp;
-            $i++;
-        }
-        return $pass;
-    }
  
     //login form
     function loginform($formname, $formclass, $formaction){
         //conect to DB
-        echo'
-<form name="'.$formname.'" method="post" id="'.$formname.'" class="'.$formclass.'" enctype="application/x-www-form-urlencoded" action="'.$formaction.'">
-    <input type="email" class="input-text" placeholder="email" name="username">
-    <input name="action" id="action" value="login" type="hidden">
-    <input type="password" class="input-text" placeholder="password" name="passwd">
-    <input type="submit" value="Log in">
-</form> 
-';
+        echo'<form name="'.$formname.'" method="post" id="'.$formname.'" class="'.$formclass.'" enctype="application/x-www-form-urlencoded" action="'.$formaction.'">
+                <input type="email" class="input-text" placeholder="email" name="username">
+                <input name="action" id="action" value="login" type="hidden">
+                <input type="password" class="input-text" placeholder="password" name="passwd">
+                <input type="checkbox" id="remember" class="" value="1" name="remember"> <label for="remember">Remember me</label>
+                <input type="submit" value="Log in">
+            </form>';
     }
 
     function createuser($email,$passwd){
-        $passwd = md5( $passwd );
+        $passwd = md5($this->salt.$passwd );
         
         $result = $this->dbh->exec("INSERT INTO users ( useremail, password, userlevel) VALUES ('$email', '$passwd', 1)");
         // var_dump($result);
@@ -212,18 +107,38 @@ Your new password is: ".$newpassword."
         ';
     }
 
+    function try_to_connect_user() {
+        if(isset($_COOKIE['gleenrauth']) && ! isset($_SESSION['gleenruser'])){
+            $auth = $_COOKIE['gleenrauth'];
+            $auth = explode('-->', $auth);
+            $user = $this->get_user_infos();
+            $key  = sha1($user->useremail . $user->password . $_SERVER['REMOTE_ADDR']);
+            if($key = $auth[1]){
+                $_SESSION['gleenruser'] = (array) $user;
+                $this->setcookieuser( $user->userid, $key, 86400*3);
+            }else{
+                $this->setcookieuser( $user->userid, '', -1 );
+            }
+        }
+    }
+
+    function setcookieuser( $id, $cle ,$time){
+        setcookie('gleenrauth', $id .'-->'. $cle, time() + $time, '/', 'localhost', false, true );
+    }
+
     function is_user_connected(){
-        if( ! isset( $_SESSION['loggedin'] ) || $this->logincheck($_SESSION['loggedin'], "users", "passwd", "useremail") == false)
-            return false;
-        else
+        if( isset( $_SESSION['gleenruser']['userid'] ) )
             return true;
+        else
+            return false;
     }
 
     function get_user_infos(){
-        if( isset( $_SESSION['id_user'] ) ) {
-            $fields = $this->dbh->query("SELECT * FROM {$this->user_table} WHERE userid = {$_SESSION['id_user']}");
-            return $fields->fetch(PDO::FETCH_ASSOC);
-        }
+        if($this->is_user_connected()) {
+            $id = $_SESSION['gleenruser']['userid'];
+            $fields = $this->dbh->query("SELECT * FROM {$this->user_table} WHERE userid = {$id}");
+            return $fields->fetch(PDO::FETCH_OBJ);
+        }else return false;
     }
 
     function profile_form(){
