@@ -1,5 +1,4 @@
 <?php 
-require_once("class/users.class.php");
 include_once('header.php');
 $log = new logmein(); ?>
 <body>

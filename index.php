@@ -1,13 +1,14 @@
 <?php
-// require_once('class/users.class.php');
 require_once('class/altorouter.class.php');
+require_once('class/users.class.php');
+require_once('class/flux.class.php');
 $router = new AltoRouter();
 $router->setBasePath('/bow');
 
 $router->map( 'GET|POST', '/', 'home#index', 'home');
 $router->map( 'POST', '/welcome/', 'user#create', 'user_create' );
 $router->map( 'POST', '/goodbye/', 'user#delete', 'user_delete' );
-$router->map( 'GET', '/flux/subscribe/', 'flux#add', 'flux_add' );
+$router->map( 'GET|POST', '/flux/subscribe/', 'flux#add', 'flux_add' );
 $match = $router->match();
 
 if( 'home' == $match['name'] )
