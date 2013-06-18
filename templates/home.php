@@ -22,7 +22,7 @@ $log = new logmein(); ?>
     <section class="content">
         <?php if( ! $log->is_user_connected() ) { ?>
         <article  class="register-box">
-            <h2>Join gazr now!</h2>
+            <h2>Join gleenr now!</h2>
             <?php $log->registerform('','register-form', 'validate_user.php'); ?>
             <div class="article-separator"><span>Or</span></div>
             <ul class="register-socials">
@@ -33,7 +33,7 @@ $log = new logmein(); ?>
         </article>
         <article class="article-content">
             <header>
-                <h1>What's gazr ?</h1>
+                <h1>What's gleenr ?</h1>
             </header>
             <p>Jedi master Darth Vader the Force is strong with this one protocol droid Coruscant Lando Calrissian. Dantooine the Force Jabba the Hutt these aren't the droids you're looking for I find your lack of faith disturbing. Tatooine battle of Yavin Millenium Falcon scoundrel tie fighter. Apprentice empire who you calling scruffy-looking aren't you a little short for a stormtrooper. Star destroyer Luke Skywalker garbage compactor. Ewok X-Wing Master Yoda sith lord it's a trap Corellian ship.</p>
         </article>

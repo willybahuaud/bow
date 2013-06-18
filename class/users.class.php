@@ -49,6 +49,8 @@ class logmein {
             //userlevel session is optional. Use it if you have different user levels
             $_SESSION['userlevel'] = $row['userlevel'];
             $_SESSION['id_user'] = $row['userid'];
+
+            //http://stackoverflow.com/questions/1354999/keep-me-logged-in-the-best-approach
             return true;
         }else{
             session_destroy();
