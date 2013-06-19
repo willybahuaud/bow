@@ -9,6 +9,7 @@ $router->map( 'GET|POST', '/', 'home#index', 'home');
 $router->map( 'POST', '/welcome/', 'user#create', 'user_create' );
 $router->map( 'POST', '/goodbye/', 'user#delete', 'user_delete' );
 $router->map( 'GET|POST', '/flux/subscribe/', 'flux#add', 'flux_add' );
+$router->map( 'GET|POST', '/flux/import/', 'flux#import', 'flux_import' );
 $match = $router->match();
 
 if( 'home' == $match['name'] )
@@ -22,6 +23,9 @@ if( 'user_create' == $match['name'] )
 
 if( 'user_delete' == $match['name'] )
     require('templates/delete_account.php');
+
+if( 'flux_import' == $match['name'] )
+    require('templates/import_flux.php');
 
 ?>
 

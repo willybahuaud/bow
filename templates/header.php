@@ -7,4 +7,4 @@
     <link rel="stylesheet" href="assets/style.css">    
 </head>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
-<script src ="assets/js/gestion-flux.js"></script>
+<!-- <script src ="assets/js/gestion-flux.js"></script> -->
