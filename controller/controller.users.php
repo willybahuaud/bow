@@ -28,6 +28,10 @@ class users extends controller{
         $this->render('delete');
     }
 
+    function subscribe(){
+        $this->render();
+    }
+
 }
 
 ?>

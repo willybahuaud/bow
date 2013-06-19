@@ -8,9 +8,9 @@ $log = new logmein();
 $router = new AltoRouter();
 $router->setBasePath('/bow');
 
-$router->map( 'GET|POST', '/', ( ( $log->is_user_connected() ) ? 'flux#read' : 'user#subscribe' ), 'home');
-$router->map( 'POST', '/welcome/', 'user#create', 'user_create' );
-$router->map( 'POST', '/goodbye/', 'user#delete', 'user_delete' );
+$router->map( 'GET|POST', '/', ( ( $log->is_user_connected() ) ? 'flux#read' : 'users#subscribe' ), 'home');
+$router->map( 'POST', '/welcome/', 'users#create', 'user_create' );
+$router->map( 'POST', '/goodbye/', 'users#delete', 'user_delete' );
 $router->map( 'GET|POST', '/flux/subscribe/', 'flux#add', 'flux_add' );
 $router->map( 'GET|POST', '/flux/import/', 'flux#import', 'flux_import' );
 $match = $router->match();
