@@ -2,6 +2,7 @@
 require_once('class/altorouter.class.php');
 require_once('class/users.class.php');
 require_once('class/flux.class.php');
+require_once('controller/controller.php');
 $router = new AltoRouter();
 $router->setBasePath('/bow');
 

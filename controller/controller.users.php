@@ -1,30 +1,32 @@
 <?php
 
 // ici on met les fichiers require
+class users extends controller{
+
+    function indexAction(){
+
+        $truc = array('pouet'=>'pouet');
+        $this->set($truc);
+        $this->render('index');
+    }
+
+    function createAction(){
+
+        $this->render('create');
+    }
 
 
-public function indexAction(){
+    function readAction(){
+
+        $this->render('read');
+    }
 
 
- return $response;
+    function deleteAction(){
+
+        $this->render('delete');
+    }
+
 }
-
-public function createAction(){
-
- return $response;
-}
-
-
-public function readAction(){
-
- return $response;
-}
-
-
-public function deleteAction(){
-
- return $response;
-}
-
 
 ?>
