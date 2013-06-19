@@ -7,6 +7,7 @@ class controller {
     }
 
     function render( $filename ) {
+        require( 'templates/header.php' );
         extract( $this->vars );
         require( 'templates/' .get_class ($this) .'/'. $filename .'.php');
     }

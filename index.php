@@ -1,4 +1,5 @@
 <?php
+session_start();
 require_once('class/altorouter.class.php');
 require_once('class/users.class.php');
 require_once('class/flux.class.php');
