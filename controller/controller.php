@@ -8,6 +8,6 @@ class controller {
 
     function render( $filename ) {
         extract( $this->vars );
-        require( '../templates/' . $filename .'.php');
+        require( 'templates/' .get_class ($this) .'/'. $filename .'.php');
     }
 }

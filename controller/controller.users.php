@@ -29,7 +29,7 @@ class users extends controller{
     }
 
     function subscribe(){
-        $this->render();
+        $this->render('subscribe');
     }
 
 }
