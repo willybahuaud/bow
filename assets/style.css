@@ -1,6 +1,27 @@
 @import url(http://fonts.googleapis.com/css?family=Fugaz+One);
 @import url(http://fonts.googleapis.com/css?family=Lato);
 
+@font-face {
+	font-family: 'gleenr';
+	src:url('fonts/gleenr.eot');
+	src:url('fonts/gleenr.eot?#iefix') format('embedded-opentype'),
+		url('fonts/gleenr.woff') format('woff'),
+		url('fonts/gleenr.ttf') format('truetype'),
+		url('fonts/gleenr.svg#gleenr') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+[data-icon]:before {
+	font-family: 'gleenr';
+	content: attr(data-icon);
+	speak: none;
+	font-weight: normal;
+	font-variant: normal;
+	text-transform: none;
+	line-height: 1;
+	-webkit-font-smoothing: antialiased;
+}
+
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -51,7 +72,7 @@ input:focus,textarea:focus{
 /*----------------------------------------------------------DIVERS--------------------------------------------------------------*/
 html, body {
 	height: 100%;
-	background: url(img/noise.png) #E2D6CE;
+	background: url(img/noise.png) #F5F3F2;
 	color:#101010;
 	font-family: 'Lato', sans-serif;
 	line-height: 1.5em;
@@ -78,6 +99,208 @@ margin-bottom: 1em;
 }
 h1,h2,h3,h4,h5,h6{
 		font-family: 'Fugaz One', sans-serif;	
+}
+.gleenr-twitter, .gleenr-facebook, .gleenr-google-plus, .gleenr-star-empty, .gleenr-star, .gleenr-star-half, .gleenr-remove, .gleenr-bell, .gleenr-bell-alt, .gleenr-plus, .gleenr-minus, .gleenr-bullhorn, .gleenr-signin, .gleenr-folder-close-alt, .gleenr-folder-open-alt, .gleenr-bookmark-empty, .gleenr-bookmark, .gleenr-heart, .gleenr-share-alt, .gleenr-arrow-down, .gleenr-arrow-up, .gleenr-link, .gleenr-quote-left, .gleenr-quote-right, .gleenr-rss, .gleenr-eye-close, .gleenr-eye-open, .gleenr-home, .gleenr-cloud-download, .gleenr-cloud-upload, .gleenr-refresh, .gleenr-envelope-alt, .gleenr-ok, .gleenr-folder-close, .gleenr-folder-open, .gleenr-trash, .gleenr-cog, .gleenr-briefcase, .gleenr-pencil, .gleenr-lock, .gleenr-beer, .gleenr-off, .gleenr-list-ul, .gleenr-reorder, .gleenr-th-list, .gleenr-th, .gleenr-th-large, .gleenr-move, .gleenr-chevron-up, .gleenr-chevron-down, .gleenr-save, .gleenr-heart-empty, .gleenr-book, .gleenr-search, .gleenr-user, .gleenr-check-empty, .gleenr-check, .gleenr-remove-sign, .gleenr-exclamation-sign, .gleenr-question-sign, .gleenr-plus-sign, .gleenr-time, .gleenr-calendar, .gleenr-trophy {
+	font-family: 'gleenr';
+	speak: none;
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	text-transform: none;
+	line-height: 1;
+	-webkit-font-smoothing: antialiased;
+}
+.gleenr-twitter:before {
+	content: "\31";
+}
+.gleenr-facebook:before {
+	content: "\32";
+}
+.gleenr-google-plus:before {
+	content: "\33";
+}
+.gleenr-star-empty:before {
+	content: "\61";
+}
+.gleenr-star:before {
+	content: "\41";
+}
+.gleenr-star-half:before {
+	content: "\62";
+}
+.gleenr-remove:before {
+	content: "\63";
+}
+.gleenr-bell:before {
+	content: "\64";
+}
+.gleenr-bell-alt:before {
+	content: "\44";
+}
+.gleenr-plus:before {
+	content: "\65";
+}
+.gleenr-minus:before {
+	content: "\45";
+}
+.gleenr-bullhorn:before {
+	content: "\66";
+}
+.gleenr-signin:before {
+	content: "\67";
+}
+.gleenr-folder-close-alt:before {
+	content: "\68";
+}
+.gleenr-folder-open-alt:before {
+	content: "\48";
+}
+.gleenr-bookmark-empty:before {
+	content: "\69";
+}
+.gleenr-bookmark:before {
+	content: "\49";
+}
+.gleenr-heart:before {
+	content: "\6b";
+}
+.gleenr-share-alt:before {
+	content: "\6c";
+}
+.gleenr-arrow-down:before {
+	content: "\6d";
+}
+.gleenr-arrow-up:before {
+	content: "\4d";
+}
+.gleenr-link:before {
+	content: "\6e";
+}
+.gleenr-quote-left:before {
+	content: "\6f";
+}
+.gleenr-quote-right:before {
+	content: "\4f";
+}
+.gleenr-rss:before {
+	content: "\70";
+}
+.gleenr-eye-close:before {
+	content: "\71";
+}
+.gleenr-eye-open:before {
+	content: "\51";
+}
+.gleenr-home:before {
+	content: "\72";
+}
+.gleenr-cloud-download:before {
+	content: "\73";
+}
+.gleenr-cloud-upload:before {
+	content: "\53";
+}
+.gleenr-refresh:before {
+	content: "\74";
+}
+.gleenr-envelope-alt:before {
+	content: "\75";
+}
+.gleenr-ok:before {
+	content: "\43";
+}
+.gleenr-folder-close:before {
+	content: "\76";
+}
+.gleenr-folder-open:before {
+	content: "\56";
+}
+.gleenr-trash:before {
+	content: "\77";
+}
+.gleenr-cog:before {
+	content: "\78";
+}
+.gleenr-briefcase:before {
+	content: "\58";
+}
+.gleenr-pencil:before {
+	content: "\79";
+}
+.gleenr-lock:before {
+	content: "\7a";
+}
+.gleenr-beer:before {
+	content: "\26";
+}
+.gleenr-off:before {
+	content: "\e9";
+}
+.gleenr-list-ul:before {
+	content: "\22";
+}
+.gleenr-reorder:before {
+	content: "\27";
+}
+.gleenr-th-list:before {
+	content: "\28";
+}
+.gleenr-th:before {
+	content: "\2d";
+}
+.gleenr-th-large:before {
+	content: "\e8";
+}
+.gleenr-move:before {
+	content: "\5f";
+}
+.gleenr-chevron-up:before {
+	content: "\e7";
+}
+.gleenr-chevron-down:before {
+	content: "\39";
+}
+.gleenr-save:before {
+	content: "\e0";
+}
+.gleenr-heart-empty:before {
+	content: "\4b";
+}
+.gleenr-book:before {
+	content: "\29";
+}
+.gleenr-search:before {
+	content: "\3d";
+}
+.gleenr-user:before {
+	content: "\5e";
+}
+.gleenr-check-empty:before {
+	content: "\24";
+}
+.gleenr-check:before {
+	content: "\a3";
+}
+.gleenr-remove-sign:before {
+	content: "\f9";
+}
+.gleenr-exclamation-sign:before {
+	content: "\25";
+}
+.gleenr-question-sign:before {
+	content: "\2a";
+}
+.gleenr-plus-sign:before {
+	content: "\b5";
+}
+.gleenr-time:before {
+	content: "\2c";
+}
+.gleenr-calendar:before {
+	content: "\3b";
+}
+.gleenr-trophy:before {
+	content: "\3a";
 }
 /*----------------------------------------------------------TOP BAR--------------------------------------------------------------*/
 .topbar {
@@ -175,7 +398,31 @@ h1,h2,h3,h4,h5,h6{
 	font: 1.2em 'Fugaz One', sans-serif;
 	color:#FFF;
 }
-
+.register-socials:after {
+content: "";
+width: 100%;
+display: inline-block;
+}
+.register-socials {
+text-align: justify;
+width: 40%;
+margin: 1em auto -1em auto;
+}
+.register-socials li {
+display: inline-block;
+}
+.register-socials a {
+text-decoration: none;
+font-size: 2em;
+color: #FFF;
+display: block;
+width: 3em;
+height: 3em;
+line-height: 3em;
+text-align: center;
+background: #000;
+border-radius: 50%;
+}
 
 /*-----------------------------------------------SUITE INTEGRATION-------------------------------------------*/
 .content .flux-content {
