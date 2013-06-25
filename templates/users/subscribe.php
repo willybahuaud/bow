@@ -5,7 +5,7 @@ $router = new AltoRouter();
 <body>
     <div class="topbar">
         <a href="" class="logo">
-            <img src="assets/img/gazr.png" alt="">
+            <img src="assets/img/gleenr.png" alt="">
         </a>
         <div class="login-box">         
             <?php 
@@ -19,9 +19,9 @@ $router = new AltoRouter();
             <?php $log->registerform('','register-form', ''); //, $router->generate('user_create') ?>
             <div class="article-separator"><span>Or</span></div>
             <ul class="register-socials">
-                <li><a href="" class="gleenr-facebook"></a></li>
-                <li><a href="" class="gleenr-twitter"></a></li>
-                <li><a href="" class="gleenr-google-plus"></a></li>
+                <li><span href="" class="gleenr-facebook"></span><a href="">Join</a></li>
+                <li><span href="" class="gleenr-twitter"></span><a href="">Join</a></li>
+                <li><span href="" class="gleenr-google-plus"></span><a href="">Join</a></li>
             </ul>
         </article>
         <article class="article-content">
