@@ -305,6 +305,7 @@ h1,h2,h3,h4,h5,h6{
 /*----------------------------------------------------------TOP BAR--------------------------------------------------------------*/
 .topbar {
 	background: url(img/noise.png) #101010;
+	color: #FFF;
 	position: fixed;
 	height: 90px;
 	width: 100%;
@@ -334,6 +335,13 @@ h1,h2,h3,h4,h5,h6{
 	display: inline-block;
 	margin-bottom: 2px;
 	vertical-align: bottom;
+}
+#remember:checked + .gleenr-check-empty:before{
+		content: "\a3";
+	}
+#remember{
+	position:absolute;
+	left:-9999px;
 }
 /*----------------------------------------------------------CONTENT--------------------------------------------------------------*/
 .content {

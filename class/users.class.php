@@ -54,7 +54,7 @@ class logmein {
                 <input type="email" class="input-text" placeholder="email" name="username">
                 <input name="action" id="action" value="login" type="hidden">
                 <input type="password" class="input-text" placeholder="password" name="passwd">
-                <input type="checkbox" id="remember" class="" value="1" name="remember"> <label for="remember">Remember me</label>
+                <input type="checkbox" id="remember" class="" value="1" name="remember"><label for="remember" class="gleenr-check-empty"></label><label for="remember">Remember me</label>
                 <input type="submit" value="Log in">
             </form>';
     }
